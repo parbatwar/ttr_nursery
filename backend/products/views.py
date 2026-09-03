@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
@@ -30,12 +31,26 @@ def product_list(request):
     if max_price:
         products = products.filter(price__lte=max_price)
 
-    if ordering:
-        products = products.order_by(ordering)
+    allowed_orderings = {
+        "price": "price",
+        "-price": "-price",
+        "created_at": "created_at",
+        "-created_at": "-created_at",
+        "name": "name",
+        "-name": "-name",
+    }
 
-    serializer = ProductSerializer(products, many=True)
+    if ordering in allowed_orderings:
+        products = products.order_by(allowed_orderings[ordering])
 
-    return Response(serializer.data)
+    paginator = PageNumberPagination()
+    paginator.page_size = 10
+
+    result_page = paginator.paginate_queryset(products, request)
+
+    serializer = ProductSerializer(result_page, many=True)
+
+    return paginator.get_paginated_response(serializer.data)
 
 
 @api_view(["GET"])
