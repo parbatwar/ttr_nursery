@@ -11,7 +11,30 @@ from django.shortcuts import render
 @api_view(["GET"])
 def product_list(request):
     products = Product.objects.all()
+
+    category = request.GET.get("category")
+    search = request.GET.get("search")
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
+    ordering = request.GET.get("ordering")
+
+    if category:
+        products = products.filter(category__slug=category)
+
+    if search:
+        products = products.filter(name__icontains=search)
+
+    if min_price:
+        products = products.filter(price__gte=min_price)
+
+    if max_price:
+        products = products.filter(price__lte=max_price)
+
+    if ordering:
+        products = products.order_by(ordering)
+
     serializer = ProductSerializer(products, many=True)
+
     return Response(serializer.data)
 
 
