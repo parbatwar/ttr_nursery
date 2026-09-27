@@ -1,38 +1,66 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 import Home from "./pages/Home";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Account from "./pages/Account";
 
-function Products() {
-  return <div className="p-10">Products</div>;
-}
-
-function Cart() {
-  return <div className="p-10">Cart</div>;
-}
-
-function Login() {
-  return <div className="p-10">Login</div>;
-}
-
-export default function App() {
+function MainLayout({ children }) {
   return (
-    <BrowserRouter>
-      <div className="flex min-h-screen flex-col bg-[var(--ttr-bg)]">
-        <Navbar />
+    <>
+      <Navbar />
 
-        <div className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </div>
+      <main className="min-h-screen">
+        {children}
+      </main>
 
-        <Footer />
-      </div>
-    </BrowserRouter>
+      <Footer />
+    </>
   );
 }
+
+function App() {
+  return (
+      <Routes>
+        {/* Pages WITH Navbar & Footer */}
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Home />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/products"
+          element={
+            <MainLayout>
+              <Products />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/products/:slug"
+          element={
+            <MainLayout>
+              <ProductDetail />
+            </MainLayout>
+          }
+        />
+
+        {/* Auth pages WITHOUT Navbar & Footer */}
+        <Route path="/account" element={<MainLayout><Account /></MainLayout>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+  );
+}
+
+export default App;
