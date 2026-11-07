@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 
 from pathlib import Path
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -85,8 +86,12 @@ DATABASES = {
     }
 }
 
+# Lets the browser send the guest cart token.
+CORS_ALLOW_HEADERS = (*default_headers, "x-cart-token")
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:5174",
 ]
 
 CLOUDINARY_STORAGE = {

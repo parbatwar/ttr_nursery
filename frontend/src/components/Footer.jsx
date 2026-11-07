@@ -1,4 +1,7 @@
-function InstagramIcon({ size = 17 }) {
+import { Link } from "react-router-dom";
+import { CONTACT } from "../lib/contact";
+
+function InstagramIcon({ size = 18 }) {
   return (
     <svg
       width={size}
@@ -18,7 +21,7 @@ function InstagramIcon({ size = 17 }) {
   );
 }
 
-function FacebookIcon({ size = 17 }) {
+function FacebookIcon({ size = 18 }) {
   return (
     <svg
       width={size}
@@ -32,7 +35,7 @@ function FacebookIcon({ size = 17 }) {
   );
 }
 
-function TikTokIcon({ size = 17 }) {
+function TikTokIcon({ size = 18 }) {
   return (
     <svg
       width={size}
@@ -46,194 +49,123 @@ function TikTokIcon({ size = 17 }) {
   );
 }
 
+const LINK_GROUPS = [
+  {
+    title: "Shop",
+    links: [
+      { name: "All products", to: "/products" },
+      { name: "Indoor", to: "/products?category=indoor" },
+      { name: "Outdoor", to: "/products?category=outdoor" },
+      { name: "Fruit & Herbs", to: "/products?category=fruit-herbs" },
+      { name: "Pots & Garden Care", to: "/products?category=pots-garden-care" },
+    ],
+  },
+  {
+    title: "Nursery",
+    links: [
+      { name: "Services", to: "/services" },
+      { name: "About", to: "/about" },
+      { name: "Contact Us", to: "/contact" },
+    ],
+  },
+];
+
+const SOCIAL_LINKS = [
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/ttrnursery",
+    Icon: InstagramIcon,
+  },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/ttrnurseryNP",
+    Icon: FacebookIcon,
+  },
+  {
+    name: "TikTok",
+    href: "https://www.tiktok.com/@ttrnursery",
+    Icon: TikTokIcon,
+  },
+];
+
 export default function Footer() {
   return (
-    <footer className="bg-[var(--ttr-green-green-dark)] px-6 pb-8 pt-16 text-[#F4F0E8] sm:px-10 lg:px-16 lg:pt-20">
-      <div className="mx-auto max-w-[var(--ttr-container)]">
-
-        {/* TOP */}
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
-
-          {/* BRAND */}
-          <div className="lg:col-span-5">
-
-            {/* LOGO */}
-            <div className="mb-7">
-              <img
-                src="/logo.png"
-                alt="TTR Banglamukhi Nursery"
-                className="h-24 w-auto object-contain sm:h-28 lg:h-32"
-              />
-            </div>
-
-            <p className="pb-4 font-serif text-3xl leading-tight sm:text-4xl">
-              TTR Banglamukhi Nursery
+    <footer className="ttr-footer text-white">
+      <div className="mx-auto w-[calc(100%-32px)] max-w-[var(--ttr-container)] pt-12 lg:w-[calc(100%-64px)] lg:pt-16">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 pb-10 lg:grid-cols-[2fr_1fr_1fr_1fr] lg:pb-14">
+          <div className="col-span-2 lg:col-span-1">
+            <img
+              src="/logo-clean.png"
+              alt="TTR Banglamukhi Nursery"
+              className="h-24 w-auto"
+            />
+            <p className="mt-4 max-w-xs text-[15px] leading-6 text-white/70">
+              Plants, flowers and everything your garden needs, for your home, your office and every
+              space in between.
             </p>
-
-            <p className="mt-4 max-w-sm text-sm leading-7 text-[#F4F0E8]/60">
-              Plants, flowers and green spaces grown with patience in Nepal
-              for more than twenty-five years.
-            </p>
-            
-            {/* SOCIAL ICONS */}
-            <div className="mt-8 flex items-center gap-4">
-
-            <a
-                href="https://www.instagram.com/ttrnursery"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#F4F0E8]/15 text-[#F4F0E8]/60 transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F0E8]/40 hover:text-[#F4F0E8]"
-            >
-                <InstagramIcon />
-            </a>
-
-            <a
-                href="https://www.facebook.com/ttrnurseryNP"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#F4F0E8]/15 text-[#F4F0E8]/60 transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F0E8]/40 hover:text-[#F4F0E8]"
-            >
-                <FacebookIcon />
-            </a>
-
-            <a
-                href="ttps://www.tiktok.com/@ttrnursery"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="TikTok"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#F4F0E8]/15 text-[#F4F0E8]/60 transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F0E8]/40 hover:text-[#F4F0E8]"
-            >
-                <TikTokIcon />
-            </a>
-
-            </div>
-
           </div>
 
-          {/* LINKS */}
-          <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:col-span-7">
-
-            {/* EXPLORE */}
-            <div>
-              <p className="mb-6 text-[9px] font-medium uppercase tracking-[0.24em] text-[#F4F0E8]/35 pb-4">
-                Explore
-              </p>
-
-              <div className="space-y-4 text-sm text-[#F4F0E8]/65">
-                <a
-                  href="/products"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
+          {LINK_GROUPS.map((group) => (
+            <div key={group.title}>
+              <p className="mb-3 text-sm font-medium text-white/55">{group.title}</p>
+              {group.links.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.to}
+                  className="flex min-h-9 w-fit items-center text-[15px] transition-colors hover:text-[var(--ttr-sec-gold)]"
                 >
-                  All Plants
-                </a>
-
-                <a
-                  href="/products?category=indoor"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Indoor Plants
-                </a>
-
-                <a
-                  href="/products?category=seasonal"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Outdoor Plants
-                </a>
-
-                <a
-                  href="/products?category=pots"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Pots & Planters
-                </a>
-
-                <a
-                  href="/#story"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Our Story
-                </a>
-              </div>
+                  {link.name}
+                </Link>
+              ))}
             </div>
+          ))}
 
-            {/* SERVICES */}
-            <div>
-              <p className="mb-6 text-[9px] font-medium uppercase tracking-[0.24em] text-[#F4F0E8]/35 pb-4">
-                Services
-              </p>
+          <div>
+            <p className="mb-3 text-sm font-medium text-white/55">Visit</p>
+            <p className="text-[15px] leading-6">{CONTACT.address}</p>
 
-              <div className="space-y-4 text-sm leading-5 text-[#F4F0E8]/65">
+            {CONTACT.hours && (
+              <p className="mt-1 text-[15px] leading-6 text-white/70">{CONTACT.hours}</p>
+            )}
+
+            {CONTACT.phone && (
+              <a
+                href={`tel:${CONTACT.phone}`}
+                className="flex min-h-9 w-fit items-center text-[15px] hover:text-[var(--ttr-sec-gold)]"
+              >
+                {CONTACT.phone}
+              </a>
+            )}
+
+            {CONTACT.email && (
+              <a
+                href={`mailto:${CONTACT.email}`}
+                className="flex min-h-9 w-fit items-center text-[15px] hover:text-[var(--ttr-sec-gold)]"
+              >
+                {CONTACT.email}
+              </a>
+            )}
+
+            <div className="mt-3 -ml-3 flex">
+              {SOCIAL_LINKS.map(({ name, href, Icon }) => (
                 <a
-                  href="/services/landscape"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
+                  key={name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={name}
+                  className="grid h-11 w-11 place-items-center rounded-full transition-colors hover:bg-white/10 hover:text-[var(--ttr-sec-gold)]"
                 >
-                  Landscape Design
+                  <Icon />
                 </a>
-
-                <a
-                  href="/services/plants-and-flowers"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Plants & Flowers
-                </a>
-
-                <a
-                  href="/services/plant-rentals"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Plant Rentals
-                </a>
-
-                <a
-                  href="/services/garden-care"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Garden Care
-                </a>
-              </div>
-            </div>
-
-            {/* VISIT */}
-            <div className="col-span-2 sm:col-span-1 pb-4">
-              <p className="mb-6 text-[9px] font-medium uppercase tracking-[0.24em] text-[#F4F0E8]/35">
-                Visit
-              </p>
-
-              <div className="space-y-4 text-sm leading-6 text-[#F4F0E8]/65">
-                <p>
-                  Kathmandu
-                  <br />
-                  Nepal
-                </p>
-
-                <a
-                  href="/contact"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Contact Us
-                </a>
-
-                <a
-                  href="/cart"
-                  className="block transition-colors duration-300 hover:text-[#F4F0E8]"
-                >
-                  Your Cart
-                </a>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* BOTTOM */}
-        <div className="mt-10 flex flex-col gap-5 border-t border-white/10 pt-6 text-[9px] uppercase tracking-[0.18em] text-white/35 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} TTR Banglamukhi Nursery
-          </p>
-        </div>
-
+        <p className="border-t border-white/15 py-5 text-[13px] text-white/55">
+          © {new Date().getFullYear()} TTR Banglamukhi Nursery
+        </p>
       </div>
     </footer>
   );

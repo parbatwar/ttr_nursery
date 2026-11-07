@@ -2,93 +2,238 @@
 
 :root {
   /* TTR COLORS */
-  --ttr-bg: white;
-  --ttr-bg-soft: #efede7;
+  --ttr-bg: #f9f9f6;
+  --ttr-bg-soft: #f0f0ec;
   --ttr-surface: #ffffff;
 
-  --ttr-text: #292b27;
-  --ttr-text-soft: #55574f;
-  --ttr-text-muted: #7a7c74;
+  --ttr-text: #18231b;
+  --ttr-text-soft: #4d554e;
+  --ttr-text-muted: #5f675f;
 
-  --ttr-green: #586353;
-  --ttr-green-dark: #454f45;
-  --ttr-green-soft: #a9b3a1;
+  --ttr-green: #1e3f20;
+  --ttr-green-dark: #142c16;
+  --ttr-green-soft: #7a9a7c;
+  --ttr-sage: #dfe8dc;
   --ttr-green-green-dark: #283c28;
 
-  --ttr-border: #dedbd4;
-  --ttr-border-soft: #e9e6df;
+  --ttr-border: #e2e3e0;
+  --ttr-border-soft: #ecedea;
 
-  --ttr-sec-gold: #E7A621;
+  --ttr-sec-gold: #ecd07a;
 
   /* TTR FONTS */
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Instrument Serif", serif;
+  --font-sans: "Inter", sans-serif;
 
   /* COMMON */
-  --ttr-container: 1500px;
-  --ttr-radius: 2px;
+  --ttr-container: 1280px;
+  --ttr-radius-control: 12px;
+  --ttr-radius-card: 12px;
 
   /* TRANSITIONS */
   --ttr-transition: 200ms ease;
   --ttr-transition-slow: 500ms ease;
 }
 
-* {
-  box-sizing: border-box;
+/* Layers let Tailwind classes such as mb-4 override these defaults. */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ttr-bg);
+    color: var(--ttr-text);
+    font-family: var(--font-sans);
+    font-optical-sizing: auto;
+    letter-spacing: -0.008em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ttr-green);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+  }
+
+  p {
+    margin: 0;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
+@layer components {
+  .ttr-nav-link {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ttr-text);
+    transition: color var(--ttr-transition);
+  }
+
+  .ttr-nav-link:hover {
+    color: var(--ttr-green);
+  }
+
+  /* Slim rounded button with a circle arrow, used on the home page. */
+  .ttr-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 5px 5px 5px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    transition:
+      transform var(--ttr-transition),
+      box-shadow var(--ttr-transition);
+  }
+
+  .ttr-pill:hover {
+    box-shadow: 0 8px 22px rgba(24, 35, 27, 0.18);
+  }
+
+  .ttr-pill:active {
+    transform: scale(0.97);
+  }
+
+  .ttr-pill-light {
+    background: white;
+    color: var(--ttr-text);
+  }
+
+  .ttr-pill-dark {
+    background: var(--ttr-green);
+    color: white;
+  }
+
+  .ttr-pill-circle {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+  }
+
+  /* Soft gold from the logo, used only for the main hero button. */
+  .ttr-pill-accent {
+    background: var(--ttr-sec-gold);
+    color: var(--ttr-text);
+  }
+
+  .ttr-pill-light .ttr-pill-circle,
+  .ttr-pill-accent .ttr-pill-circle {
+    background: var(--ttr-text);
+    color: white;
+  }
+
+  .ttr-pill-dark .ttr-pill-circle {
+    background: white;
+    color: var(--ttr-green);
+  }
+
+  /* Softens product photos so mixed lighting sits together better. */
+  .ttr-photo {
+    filter: saturate(0.94) contrast(0.98);
+  }
+
+  /* Lets the product row scroll without showing a scrollbar. */
+  .ttr-rail {
+    scrollbar-width: none;
+  }
+
+  .ttr-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Deep green footer with a soft gradient. */
+  .ttr-footer {
+    background-image: linear-gradient(
+      160deg,
+      var(--ttr-green) 0%,
+      var(--ttr-green-dark) 55%,
+      #0e2010 100%
+    );
+  }
+
+  /* Review rows that drift slowly across the page and pause on hover. */
+  .ttr-drift {
+    overflow: hidden;
+  }
+
+  .ttr-drift-track {
+    display: flex;
+    width: max-content;
+    animation: ttr-drift 120s linear infinite;
+  }
+
+  .ttr-drift-reverse {
+    animation-direction: reverse;
+  }
+
+  .ttr-drift-track:hover {
+    animation-play-state: paused;
+  }
 }
 
-body {
-  margin: 0;
-  background: var(--ttr-bg);
-  color: var(--ttr-text);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+/* Moves by two of the four copies, so the loop restarts without a jump. */
+@keyframes ttr-drift {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-}
+  /* No drifting here: the review rows become rows you can swipe instead. */
+  .ttr-drift-track {
+    animation: none !important;
+  }
 
-p {
-  margin: 0;
-}
-
-.ttr-nav-link {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ttr-text-soft);
-  transition: opacity var(--ttr-transition);
-}
-
-.ttr-nav-link:hover {
-  opacity: 0.5;
+  .ttr-drift {
+    overflow-x: auto;
+  }
 }
