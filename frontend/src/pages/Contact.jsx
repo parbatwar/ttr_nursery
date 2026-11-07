@@ -1,95 +1,110 @@
-import { MapPin } from "lucide-react";
+import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import SocialLinks from "../components/SocialLinks";
 import { CONTACT, getWhatsAppLink } from "../lib/contact";
 
-const SOCIAL_LINKS = [
-  { name: "Instagram", href: "https://www.instagram.com/ttrnursery" },
-  { name: "Facebook", href: "https://www.facebook.com/ttrnurseryNP" },
-  { name: "TikTok", href: "https://www.tiktok.com/@ttrnursery" },
-];
-
-const linkStyle =
-  "flex min-h-11 items-center rounded-full bg-white px-5 font-medium transition hover:bg-[var(--ttr-text)] hover:text-white";
-
-export default function Contact() {
+function getContactRows() {
   const whatsappLink = getWhatsAppLink();
 
+  const rows = [
+    { label: "Call us", value: CONTACT.phone, href: `tel:${CONTACT.phone}`, Icon: Phone },
+    {
+      label: "WhatsApp",
+      value: whatsappLink && "Message us",
+      href: whatsappLink,
+      Icon: MessageCircle,
+      isExternal: true,
+    },
+    { label: "Email", value: CONTACT.email, href: `mailto:${CONTACT.email}`, Icon: Mail },
+    {
+      label: "Visit",
+      value: CONTACT.address,
+      href: CONTACT.directionsUrl,
+      Icon: MapPin,
+      isExternal: true,
+    },
+    { label: "Hours", value: CONTACT.hours, Icon: Clock },
+  ];
+
+  // Details left blank in contact.js stay hidden.
+  return rows.filter((row) => row.value);
+}
+
+function ContactRow({ label, value, href, Icon, isExternal = false }) {
+  const content = (
+    <>
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[var(--ttr-sage)] text-[var(--ttr-green)]">
+        <Icon size={20} strokeWidth={1.5} />
+      </span>
+
+      <span className="min-w-0 flex-1">
+        <span className="block text-[13px] text-[var(--ttr-text-muted)]">{label}</span>
+        <span className="block truncate font-medium group-hover:text-[var(--ttr-green)]">
+          {value}
+        </span>
+      </span>
+
+    </>
+  );
+
+  const rowStyle = "group flex items-center gap-3.5 py-3";
+
+  if (!href) {
+    return <div className={rowStyle}>{content}</div>;
+  }
+
   return (
-    <div className="mx-auto w-[calc(100%-32px)] max-w-[var(--ttr-container)] py-12 lg:w-[calc(100%-64px)] lg:py-20">
-      <div className="mx-auto mb-10 max-w-2xl text-center lg:mb-14">
-        <p className="mb-3 text-sm font-medium uppercase tracking-[0.08em] text-[var(--ttr-text-muted)]">
-          Contact us
-        </p>
-        <h1 className="text-[52px] leading-none lg:text-[84px]">
-          Come and see <em>the plants.</em>
-        </h1>
+    <a
+      href={href}
+      className={rowStyle}
+      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {content}
+    </a>
+  );
+}
+
+export default function Contact() {
+  const rows = getContactRows();
+
+  return (
+    <section className="relative lg:h-[calc(100vh-80px)] lg:min-h-[720px]">
+      {/* On phones the map sits above the card. On desktop it fills the page behind it.
+          The map is pulled up 150px to crop Google's info box, which would sit behind the card. */}
+      <div className="h-80 overflow-hidden lg:absolute lg:inset-0 lg:h-full">
+        <iframe
+          src={CONTACT.mapEmbedUrl}
+          title="TTR Banglamukhi Nursery on Google Maps"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="-mt-[150px] block h-[calc(100%+150px)] w-full border-0"
+        />
       </div>
 
-      <div className="grid gap-3 lg:grid-cols-2">
-        <section className="rounded-xl bg-[var(--ttr-bg-soft)] p-6 lg:p-10">
-          <span className="grid h-[52px] w-[52px] place-items-center rounded-full bg-white text-[var(--ttr-green)]">
-            <MapPin size={24} strokeWidth={1.5} />
-          </span>
-          <h2 className="mt-7 text-[36px]">Visit the nursery</h2>
-          <p className="mt-2 text-[17px] text-[var(--ttr-text-soft)]">{CONTACT.address}</p>
+      <div className="pointer-events-none relative mx-auto flex h-full w-[calc(100%-32px)] max-w-[var(--ttr-container)] items-center lg:w-[calc(100%-64px)]">
+        <div className="pointer-events-auto mb-12 mt-4 w-full rounded-2xl bg-[var(--ttr-bg)] p-6 shadow-[0_20px_50px_rgba(24,35,27,0.18)] lg:my-0 lg:w-[460px] lg:p-9">
+          <p className="mb-3 text-sm font-medium uppercase tracking-[0.08em] text-[var(--ttr-text-muted)]">
+            Contact us
+          </p>
 
-          {CONTACT.hours && (
-            <p className="mt-1 text-[var(--ttr-text-soft)]">{CONTACT.hours}</p>
-          )}
+          <h1 className="text-[44px] leading-none lg:text-[56px]">
+            Come and see <em>the plants.</em>
+          </h1>
 
-          {CONTACT.mapEmbedUrl && (
-            <iframe
-              src={CONTACT.mapEmbedUrl}
-              title="TTR Banglamukhi Nursery on Google Maps"
-              loading="lazy"
-              className="mt-5 h-64 w-full rounded-2xl border-0"
-            />
-          )}
-        </section>
-
-        <section className="rounded-xl bg-[var(--ttr-bg-soft)] p-6 lg:p-10">
-          <h2 className="text-[36px]">Message us</h2>
-          <p className="mt-2 text-[var(--ttr-text-soft)]">
+          <p className="mt-4 leading-7 text-[var(--ttr-text-soft)]">
             Ask about plants, delivery, landscaping or office rentals.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            {whatsappLink && (
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkStyle}
-              >
-                WhatsApp
-              </a>
-            )}
-
-            {CONTACT.phone && (
-              <a href={`tel:${CONTACT.phone}`} className={linkStyle}>
-                {CONTACT.phone}
-              </a>
-            )}
-
-            {CONTACT.email && (
-              <a href={`mailto:${CONTACT.email}`} className={linkStyle}>
-                {CONTACT.email}
-              </a>
-            )}
-
-            {SOCIAL_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkStyle}
-              >
-                {link.name}
-              </a>
+          <div className="mt-5 divide-y divide-[var(--ttr-border)] border-y border-[var(--ttr-border)]">
+            {rows.map((row) => (
+              <ContactRow key={row.label} {...row} />
             ))}
           </div>
-        </section>
+
+          <SocialLinks
+            className="mt-4 -ml-2.5 gap-1"
+            linkClassName="text-[var(--ttr-green)] hover:bg-[var(--ttr-sage)]"
+          />
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

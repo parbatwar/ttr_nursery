@@ -16,7 +16,6 @@ const NAV_LINKS = [
   { name: "Home", to: "/" },
   { name: "Products", to: "/products" },
   { name: "Services", to: "/services" },
-  { name: "About", to: "/about" },
   { name: "Contact Us", to: "/contact" },
 ];
 

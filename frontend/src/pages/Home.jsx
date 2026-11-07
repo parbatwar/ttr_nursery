@@ -400,12 +400,6 @@ function FounderNote() {
             Founder, TTR Banglamukhi Nursery
           </p>
         </div>
-
-        <div className="mt-7">
-          <PillLink to="/about" dark>
-            Read our story
-          </PillLink>
-        </div>
       </div>
     </section>
   );

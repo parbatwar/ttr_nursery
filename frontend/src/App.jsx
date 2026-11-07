@@ -12,7 +12,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Services from "./pages/Services";
-import About from "./pages/About";
+// About page is hidden for now. To bring it back, restore this import and its route,
+// then add the links back in Navbar.jsx and Footer.jsx.
+// import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Checkout from "./pages/Checkout";
 import OrderStatus from "./pages/OrderStatus";
@@ -75,6 +77,7 @@ function App() {
           }
         />
 
+        {/* Hidden for now.
         <Route
           path="/about"
           element={
@@ -83,6 +86,7 @@ function App() {
             </MainLayout>
           }
         />
+        */}
 
         <Route
           path="/contact"
